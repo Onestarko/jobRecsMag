@@ -11,3 +11,5 @@ rs_db = {
 }
 
 cronPath = "脚本前缀" 
+
+obName = '列表显示名称'
