@@ -1,0 +1,71 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %} 定时任务管理 {% endblock %}
+
+{% block content %}
+	<div class="page-header">
+		<div class="container">
+			<h1>数据组定时任务列表  <a href="/add" class="btn btn-danger btn-sm" role="button">添加记录</a></h1>
+		</div>
+	</div>
+
+	<div class="container">
+		<div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td>序号</td>
+						<td>任务名称</td>
+						<td>需求方</td>
+						<td>需求说明</td>
+						<td>定时周期</td>
+						<td>定时</td>
+                        <td>crontabTime</td>
+						<td>收件人</td>
+						<td>脚本路径</td>
+						<td>创建时间</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for record in jobs %}
+						<tr>
+							<td>{{record["num"]}}</td>
+							<td>{{record['name']}}</td>
+							<td>{{record['demander']}}</td>
+							<td>{{record['desc']}}</td> 
+							<td>{{record['cycle']}}</td>
+							<td>{{record['jobTime']}}</td>
+                            <td>{{record['crontabTime']}}</td>
+							<td><button class="btn btn-primary btn-sm" data-toggle='modal' data-target="#model_{{record['id']}}">查看</button></td>
+							<td>{{record['shPath']}}</td>
+							<td>{{record['createTime']}}</td>
+							<td><a href="/edit/{{record['id']}}" class="btn btn-warning btn-sm" role="button">编辑</a>
+							{% if record['deleteFlag'] == 0 %}
+								<a href="/stop/{{record['id']}}" class="btn btn-danger btn-sm" role="button">暂停</a>
+							{% else %}
+								<a href="/restart/{{record['id']}}" class="btn btn-primary btn-sm" role="button">启动</a>
+							{% endif %}
+							</td>
+						</tr>
+						<div class="modal fade" id="model_{{record['id']}}" tabindex="-1" role="dialog" aria-labelledby="model_{{record['id']}}_label" aria-hidden="True">
+							<div class="modal-dialog">
+	        					<div class="modal-content">
+	            					<div class="modal-header">
+	                					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                					<h4 class="modal-title" id="model_{{record['id']}}_label">{{record['name']}}收件人</h4>
+	            					</div>
+	            					<div class="modal-body" style="word-wrap:break-word">{{record['receivers']}}</div>
+	            					<div class="modal-footer">
+	            					</div>
+	        					</div>
+	    					</div>
+						</div>
+					{% endfor %}
+				</tbody>
+			</table>
+
+
+		<div>
+	</div>
+{% endblock content %}
