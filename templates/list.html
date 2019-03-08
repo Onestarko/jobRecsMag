@@ -5,7 +5,7 @@
 {% block content %}
 	<div class="page-header">
 		<div class="container">
-			<h1>数据组定时任务列表  <a href="/add" class="btn btn-danger btn-sm" role="button">添加记录</a></h1>
+            <h1>{{obName}}定时任务列表  <a href="/add" class="btn btn-danger btn-sm" role="button">添加记录</a></h1>
 		</div>
 	</div>
 
@@ -41,7 +41,7 @@
 							<td>{{record['shPath']}}</td>
 							<td>{{record['createTime']}}</td>
 							<td><a href="/edit/{{record['id']}}" class="btn btn-warning btn-sm" role="button">编辑</a>
-							{% if record['deleteFlag'] == 0 %}
+                            {% if record['deleteFlag'] == 0 %}
 								<a href="/stop/{{record['id']}}" class="btn btn-danger btn-sm" role="button">暂停</a>
 							{% else %}
 								<a href="/restart/{{record['id']}}" class="btn btn-primary btn-sm" role="button">启动</a>

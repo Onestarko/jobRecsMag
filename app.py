@@ -13,7 +13,7 @@ Bootstrap(app)
 @app.route('/')
 def list():
 	jobs = model.getJobs()
-	return render_template("list.html", jobs=jobs)
+	return render_template("list.html", jobs=jobs, obName=config.obName)
 
 @app.route('/edit/<id>', methods=['GET', 'POST'])
 def edit(id):
