@@ -26,7 +26,7 @@ def edit(id):
 			"demander":request.form['demander'],
 			"desc":request.form['desc'],
 			"cycle":request.form['cycle'],
-                        "crontabTime":request.form['crontabTime'],
+            "crontabTime":request.form['crontabTime'],
 			"jobTime":request.form['jobTime'],
 			"shPath":request.form['shPath'],
 			"receivers":request.form['receivers']
@@ -58,13 +58,32 @@ def add():
 	if request.method == "GET":
 		return render_template("add.html")
 	elif request.method == "POST":
+		cronType = request.form['cronType']
+		if cronType == '每天':
+			cronH = request.form['cronHTime']
+			cronM = request.form['cronMTime']
+			crontabTime = '%d %d * * *'%(int(cronM), int(cronH))
+		elif cronType == '每周':
+			cronH = request.form['cronHTime']
+			cronM = request.form['cronMTime']
+			weekNum = request.form['cronDay']
+			crontabTime = '%d %d * * %d'%(int(cronM), int(cronH), int(weekNum))
+		elif cronType == '每月':
+			cronH = request.form['cronHTime']
+			cronM = request.form['cronMTime']
+			monthNum = request.form['cronDay']
+			crontabTime = '%d %d %d * *'%(int(cronM), int(cronH), int(monthNum))
+		elif cronType == '自定义':
+			crontabTime = request.form['crontabTime']
+
+		crontabTime = crontabTime.strip()
 		insertData = {
 			"name":request.form['name'],
 			"demander":request.form['demander'],
 			"desc":request.form['desc'],
 			"cycle":request.form['cycle'],
 			"jobTime":request.form['jobTime'],
-                        "crontabTime":request.form['crontabTime'],
+            "crontabTime": crontabTime,
 			"shPath":request.form['shPath'],
 			"receivers":request.form['receivers']
 		}
@@ -74,7 +93,7 @@ def add():
 		cronUser = CronTab(user=True)
 		cod = config.cronPath + '/'+request.form['shPath']
 		job = cronUser.new(command=cod)
-		job.setall(request.form['crontabTime'])
+		job.setall(crontabTime)
 		job.set_comment(request.form['name'])
 		cronUser.write()
 

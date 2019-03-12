@@ -35,11 +35,37 @@
 				<label for="jobTime" class="col-sm-3 control-label"><h4 style="font-weight: bolder;">脚本执行时间</h4></label>
 					<input type="text" class="form-control" id="jobTime" name="jobTime">
 			</div>
-            
+
             <div class="form-group">
-                <label for="crontabTime" class="col-sm-3 control-label"><h4 style="font-weight:bolder;">crontabTime</h4></label>
-                <input type="text" class="form-control" id="crontabTime" name="crontabTime">
+                <h4 style="font-weight: bolder" id="setCrontab">crontab设置</h4>
             </div>
+            <div class="form-group">
+                <h5 id="cronTypeIndex" style="display:inline;">crontab类型</h5>
+                <select class="form-control" style="display:inline; width:12%;" name="cronType" id="cronType" onchange="setCronType();">
+                    <option>每天</option>
+                    <option>每周</option>
+                    <option>每月</option>
+                    <option>自定义</option>
+                </select>
+                <h5 id="cronDayIndex" style="display:inline; display: none"></h5>
+                <select class="form-control" onmousedown="if(this.options.length>3){this.size=4}" onblur="$(this).removeAttr('size');" onchange="$(this).removeAttr('size');"  style="display:inline; display:none; width:12%;" name="cronDay" id="cronDay">
+                </select>
+
+                <h5 id="cronHIndex" style="display:inline;">定时时间(小时)</h5>
+                <select class="form-control" onmousedown="if(this.options.length>3){this.size=4}" onblur="$(this).removeAttr('size');" onchange="$(this).removeAttr('size');"  style="display: inline;width:12%; padding-left: 0px;" name="cronHTime" id="cronHTime">
+                </select>
+                <h5 id="cronMIndex" style="display:inline;">定时时间(分钟)</h5>
+                <select class="form-control" onmousedown="if(this.options.length>3){this.size=4}" onblur="$(this).removeAttr('size');" onchange="$(this).removeAttr('size');"  style="display: inline;width:12%; padding-left: 0px;" name="cronMTime" id="cronMTime">
+                </select>
+
+                <h5 id="crontabShell" style="display:inline;">crontabShell</h5>
+                <input type="text" class="form-control" id="crontabTime" name="crontabTime" style="display: inline;width:30%;">
+            </div>
+            
+{#            <div class="form-group" id="crontabShell" style="display:none;" >#}
+{#                <label for="crontabTime" class="col-sm-3 control-label"><h4 style="font-weight:bolder;">crontabSheel</h4></label>#}
+{#                <input type="text" class="form-control" id="crontabTime" name="crontabTime">#}
+{#            </div>#}
 
 			<div class="form-group">
 				<label for="shPath" class="col-sm-3 control-label"><h4 style="font-weight: bolder;">脚本路径</h4></label>
@@ -55,4 +81,87 @@
     	
 		</form>
 	</div>
+
+{#    <script src="{{ url_for('static',filename='crontab.js') }}"></script>#}
+<script>
+window.onload = function ()
+{
+    for (i=0; i<=23; i++){
+        var st = '<option value='+i+'>'+i+'点</option>';
+        $('#cronHTime').append(st)
+    }
+
+    for (j=0; j<=59; j++) {
+        var st = '<option value='+j+'>'+j+'分</option>';
+        $('#cronMTime').append(st)
+    }
+
+    cronType = $('#cronType').find('option:selected').text();
+
+    if (cronType != '自定义') {
+        $('#crontabShell').hide();
+        $('#crontabTime').hide();
+    }
+};
+function setCronType()
+{
+    $('#cronDay').empty();
+    cronType = $('#cronType').find('option:selected').text();
+
+    if(cronType == '每天') {
+        $('#crontabShell').hide();
+        $('#crontabTime').hide();
+        $('#cronDayIndex').hide();
+        $('#cronDay').hide();
+        $('#cronHIndex').show();
+        $('#cronHTime').show();
+        $('#cronMIndex').show();
+        $('#cronMTime').show();
+    }else if(cronType == '每周') {
+        $('#crontabShell').hide();
+        $('#crontabTime').hide();
+        $('#cronHIndex').show();
+        $('#cronHTime').show();
+        $('#cronMIndex').show();
+        $('#cronMTime').show();
+        $('#cronDayIndex').text('星期');
+        $('#cronDayIndex').css('display', 'inline');
+        $('#cronDay').css('display', 'inline');
+        $('#cronDay').append('<option value=1>星期一</option>');
+        $('#cronDay').append('<option value=2>星期二</option>');
+        $('#cronDay').append('<option value=3>星期三</option>');
+        $('#cronDay').append('<option value=4>星期四</option>');
+        $('#cronDay').append('<option value=5>星期五</option>');
+        $('#cronDay').append('<option value=6>星期六</option>');
+        $('#cronDay').append('<option value=7>星期日</option>');
+        $('#cronDayIndex').show();
+        $('#cronDay').show();
+    }else if (cronType == '每月') {
+        $('#crontabShell').hide();
+        $('#crontabTime').hide();
+        $('#cronHIndex').show();
+        $('#cronHTime').show();
+        $('#cronMIndex').show();
+        $('#cronMTime').show();
+        $('#cronDayIndex').text('日期');
+        $('#cronDayIndex').css('display', 'inline');
+        $('#cronDay').css('display', 'inline');
+        for (var i=1; i<=31; i++) {
+            var st = '<option value='+i+'>'+i+'日</option>';
+            $('#cronDay').append(st);
+        }
+        $('#cronDayIndex').show();
+        $('#cronDay').show();
+    }else if (cronType == '自定义') {
+        $('#cronDayIndex').hide();
+        $('#cronDay').hide();
+        $('#cronHIndex').hide();
+        $('#cronHTime').hide();
+        $('#cronMIndex').hide();
+        $('#cronMTime').hide();
+        $('#crontabShell').show();
+        $('#crontabTime').show();
+    }
+}
+</script>
 {% endblock content %}

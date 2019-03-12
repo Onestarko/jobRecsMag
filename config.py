@@ -4,12 +4,12 @@
 '''
 
 rs_db = {
-  "host":"数据库地址",
-  "database":"需要新建一个数据库",
-  "user":"用户名",
-  "passwd":"密码"
+  "host":"192.168.64.2",
+  "database":"report_record_2",
+  "user":"root",
+  "passwd":"wojiushiwo "
 }
 
 cronPath = "脚本前缀" 
 
-obName = '列表显示名称'
+obName = 'onestarko'

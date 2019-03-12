@@ -13,13 +13,12 @@ cursor = recordDb.cursor()
 '''
 def getJobs():
 	sql = '''
-		SELECT * FROM report_form_record
+		SELECT id, 报表名称, 报表需求方, 需求描述, 周期, 执行时间, crontabTime, 脚本路径, 收件人, delete_flag, create_time FROM report_form_record
 	'''
 
 	cursor.execute(sql)
 
 	data = cursor.fetchall()
-
 	res = []
 	num = 1
 	for i in data:
